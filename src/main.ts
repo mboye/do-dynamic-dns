@@ -18,7 +18,6 @@ app.use(async (ctx) => {
 });
 
 const updateHandler = async (ctx: Context) => {
-  console.log(ctx.request.toJSON());
   const { hostname, myip: currentIpAddress } = ctx.query as Record<
     string,
     string
