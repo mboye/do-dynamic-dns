@@ -9,11 +9,12 @@ app.use(morgan("combined"));
 app.use(koaBasicAuth({ name: config.apiUser, pass: config.apiPassword }));
 
 app.use(async (ctx) => {
-  if (ctx.path === "/update") {
+  if (ctx.path === "/nic/update") {
     await updateHandler(ctx);
+    return;
   }
 
-  ctx.body = "Hello world";
+  ctx.status = 404;
 });
 
 const updateHandler = async (ctx: Context) => {
