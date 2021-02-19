@@ -6,6 +6,9 @@
   "repository": "https://github.com/mboye/do-dynamic-dns",
   "author": "Magnus Boye <magnusboye@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node build/main.js"
