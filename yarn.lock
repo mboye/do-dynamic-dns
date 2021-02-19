@@ -114,6 +114,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/koa-basic-auth@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/koa-basic-auth/-/koa-basic-auth-2.0.3.tgz#8b39299b3ec2e52b694b21dce2d653467f78e4c6"
+  integrity sha512-dQK5eVgiwi1sAXh5u35ptP7Fpqw0iEjuWtMtLc+8Z9y9rvU8766t3YgWE7ukV1lPlOSq8a1Xqeq/TQzc+GfxAw==
+  dependencies:
+    "@types/koa" "*"
+
 "@types/koa-compose@*":
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/@types/koa-compose/-/koa-compose-3.2.5.tgz#85eb2e80ac50be95f37ccf8c407c09bbe3468e9d"
@@ -198,7 +205,7 @@ any-promise@^1.1.0:
   resolved "https://registry.yarnpkg.com/any-promise/-/any-promise-1.3.0.tgz#abc6afeedcea52e809cdc0376aed3ce39635d17f"
   integrity sha1-q8av7tzqUugJzcA3au0845Y10X8=
 
-basic-auth@~2.0.1:
+basic-auth@^2.0.0, basic-auth@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-2.0.1.tgz#b998279bf47ce38344b4f3cf916d4679bbf51e3a"
   integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
@@ -449,6 +456,14 @@ keyv@^4.0.0:
   dependencies:
     json-buffer "3.0.1"
 
+koa-basic-auth@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/koa-basic-auth/-/koa-basic-auth-4.0.0.tgz#7df593771aeb5fe09c6259db206e2e627da64616"
+  integrity sha512-eV1sGVAizDuFWNpY43VF3Z1ND4PotQZB/igxHNrcJXzXw+Flmj8Uv+4hP9LyNXyvqLJz/X5bmXeMu84AAGD9Jw==
+  dependencies:
+    basic-auth "^2.0.0"
+    tsscmp "^1.0.6"
+
 koa-compose@^3.0.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/koa-compose/-/koa-compose-3.2.1.tgz#a85ccb40b7d986d8e5a345b3a1ace8eabcf54de7"
@@ -647,7 +662,7 @@ toidentifier@1.0.0:
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
 
-tsscmp@1.0.6:
+tsscmp@1.0.6, tsscmp@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/tsscmp/-/tsscmp-1.0.6.tgz#85b99583ac3589ec4bfef825b5000aa911d605eb"
   integrity sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==
