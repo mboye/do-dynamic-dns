@@ -2,6 +2,7 @@ import Koa, { Context } from "koa";
 import config from "./config";
 import morgan from "koa-morgan";
 import koaBasicAuth from "koa-basic-auth";
+import { updateHostname } from "./digitalOceanClient";
 
 const app = new Koa();
 app.use(morgan("combined"));
@@ -9,18 +10,23 @@ app.use(koaBasicAuth({ name: config.apiUser, pass: config.apiPassword }));
 
 app.use(async (ctx) => {
   if (ctx.path === "/update") {
-    return updateHandler(ctx);
+    await updateHandler(ctx);
   }
 
   ctx.body = "Hello world";
 });
 
-const updateHandler = (ctx: Context) => {
+const updateHandler = async (ctx: Context) => {
   console.log(ctx.request.toJSON());
-  const { hostname, myip: currentIpAddress } = ctx.request.query;
+  const { hostname, myip: currentIpAddress } = ctx.query as Record<
+    string,
+    string
+  >;
   console.log(
     `Received update. Hostname: ${hostname}, IP address: ${currentIpAddress}`
   );
+
+  await updateHostname(hostname, currentIpAddress);
 
   ctx.status = 200;
 };

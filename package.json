@@ -14,6 +14,7 @@
     "start": "node build/main.js"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/dotenv": "^8.2.0",
     "@types/koa": "^2.13.0",
     "@types/koa-basic-auth": "^2.0.3",
@@ -21,6 +22,7 @@
     "typescript": "^4.1.5"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "do-wrapper": "^4.4.1",
     "dotenv": "^8.2.0",
     "koa": "^2.13.1",

@@ -14,4 +14,5 @@ export default {
   listenPort: process.env.PORT,
   apiUser: requireEnv("API_USER"),
   apiPassword: requireEnv("API_PASSWORD"),
+  digitalOceanToken: requireEnv("DO_TOKEN"),
 };
