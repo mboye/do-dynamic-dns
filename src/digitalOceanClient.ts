@@ -1,11 +1,9 @@
 import axios from "axios";
 import config from "./config";
 
-const API_BASE_URL = "https://api.digitalocean.com/v2";
-
 const httpClient = axios.create({
   headers: {
-    Authorization: `Bearer ${config.digitalOceanToken}`,
+    Authorization: `Bearer ${config.digitalOcean.token}`,
   },
 });
 
@@ -41,7 +39,7 @@ type ExtendedDomainRecord = DomainRecord & {
 
 const getAllDomains = async (): Promise<Domain[]> => {
   const { data } = await httpClient.get<DomainsResponseBody>(
-    `${API_BASE_URL}/domains`
+    `${config.digitalOcean.apiBaseUrl}/domains`
   );
 
   return data.domains;
@@ -51,7 +49,7 @@ const getDomainRecords = async (
   domainName: string
 ): Promise<DomainRecord[]> => {
   const { data } = await httpClient.get<DomainRecordsResponseBody>(
-    `${API_BASE_URL}/domains/${domainName}/records`
+    `${config.digitalOcean.apiBaseUrl}/domains/${domainName}/records`
   );
 
   return data.domain_records;
@@ -104,7 +102,7 @@ const updateDomainRecord = async (
   newIpAddress: string
 ): Promise<void> => {
   const { data } = await httpClient.put<DomainRecordResponseBody>(
-    `${API_BASE_URL}/domains/${record.domain.name}/records/${record.id}`,
+    `${config.digitalOcean.apiBaseUrl}/domains/${record.domain.name}/records/${record.id}`,
     { data: newIpAddress }
   );
 

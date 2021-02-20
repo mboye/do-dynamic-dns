@@ -1,6 +1,10 @@
 import { config } from "dotenv";
 
-config();
+config({ path: ".env" });
+
+const env = process.env.NODE_ENV || "dev";
+console.log(`Loading config for environment: ${env}`);
+config({ path: `.env.${env}` });
 
 const requireEnv = (key: string): string => {
   const value = process.env[key];
@@ -14,5 +18,8 @@ export default {
   listenPort: process.env.PORT,
   apiUser: requireEnv("API_USER"),
   apiPassword: requireEnv("API_PASSWORD"),
-  digitalOceanToken: requireEnv("DO_TOKEN"),
+  digitalOcean: {
+    apiBaseUrl: requireEnv("DO_API_BASE_URL"),
+    token: requireEnv("DO_TOKEN"),
+  },
 };
