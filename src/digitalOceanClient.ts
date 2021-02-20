@@ -7,15 +7,6 @@ const httpClient = axios.create({
   },
 });
 
-type Domain = {
-  name: string;
-  ttl: number;
-};
-
-type DomainsResponseBody = {
-  domains: Domain[];
-};
-
 type DomainRecord = {
   id: number;
   type: string;
@@ -28,21 +19,8 @@ type DomainRecordsResponseBody = {
   domain_records: DomainRecord[];
 };
 
-type DomainRecordResponseBody = {
-  domain_record: DomainRecord;
-};
-
-type ExtendedDomainRecord = DomainRecord & {
-  fqdn: string;
-  domain: Domain;
-};
-
-const getAllDomains = async (): Promise<Domain[]> => {
-  const { data } = await httpClient.get<DomainsResponseBody>(
-    `${config.digitalOcean.apiBaseUrl}/domains`
-  );
-
-  return data.domains;
+type DomainRecordWithDomainName = DomainRecord & {
+  domainName: string;
 };
 
 const getDomainRecords = async (
@@ -55,29 +33,26 @@ const getDomainRecords = async (
   return data.domain_records;
 };
 
-const getAllDomainRecords = async (): Promise<ExtendedDomainRecord[]> => {
-  const domains = await getAllDomains();
-
-  return (
-    await Promise.all(
-      domains.map(async (domain) =>
-        (await getDomainRecords(domain.name))
-          .filter((record) => ["A", "AAAA"].includes(record.type))
-          .map<ExtendedDomainRecord>((record) => ({
-            ...record,
-            domain,
-            fqdn: `${record.name}.${domain.name}`,
-          }))
-      )
-    )
-  ).flat();
-};
-
 const findDomainRecordByHostname = async (
   hostname: string
-): Promise<ExtendedDomainRecord | undefined> => {
-  const records = await getAllDomainRecords();
-  return records.find((record) => record.fqdn === hostname);
+): Promise<DomainRecordWithDomainName | undefined> => {
+  const domainName = hostname.split(".").slice(-2).join(".");
+  const records = await getDomainRecords(domainName);
+
+  const hostnameRecord = records.find((record) => {
+    const fqdn = `${record.name}.${domainName}`;
+    return fqdn === hostname;
+  });
+
+  if (!hostnameRecord) {
+    return undefined;
+  }
+
+  if (["A", "AAAA"].includes(hostnameRecord.type)) {
+    return undefined;
+  }
+
+  return { ...hostnameRecord, domainName };
 };
 
 export const updateHostname = async (
@@ -86,25 +61,24 @@ export const updateHostname = async (
 ): Promise<void> => {
   const record = await findDomainRecordByHostname(hostname);
   if (!record) {
-    throw new Error(`Failed to find domain record with hostname "${hostname}"`);
-  }
-
-  if (record.type !== "A") {
-    console.log("Found domain record", record);
-    throw new Error("Found domain record, but its type is not A or AAAA.");
+    throw new Error(
+      `Failed to find domain A/AAAA record with hostname "${hostname}"`
+    );
   }
 
   await updateDomainRecord(record, currentIpAddress);
 };
 
 const updateDomainRecord = async (
-  record: ExtendedDomainRecord,
+  record: DomainRecordWithDomainName,
   newIpAddress: string
 ): Promise<void> => {
-  const { data } = await httpClient.put<DomainRecordResponseBody>(
-    `${config.digitalOcean.apiBaseUrl}/domains/${record.domain.name}/records/${record.id}`,
+  const {
+    data,
+  } = await httpClient.put(
+    `${config.digitalOcean.apiBaseUrl}/domains/${record.domainName}/records/${record.id}`,
     { data: newIpAddress }
   );
 
-  console.log("Domain record updated", data.domain_record);
+  console.log("Domain record updated");
 };

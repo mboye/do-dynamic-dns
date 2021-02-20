@@ -28,7 +28,7 @@ const updateHandler = async (ctx: Context) => {
   }
 
   console.log(
-    `Received update. Hostname: ${hostname}, IP address: ${currentIpAddress}`
+    `Processing update. Hostname: ${hostname}, IP address: ${currentIpAddress}`
   );
 
   await updateHostname(hostname, currentIpAddress);
