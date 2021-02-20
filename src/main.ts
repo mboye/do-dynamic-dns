@@ -1,15 +1,15 @@
-import Koa, { Context } from "koa";
-import config from "./config";
-import morgan from "koa-morgan";
-import koaBasicAuth from "koa-basic-auth";
-import { updateHostname } from "./digitalOceanClient";
+import Koa, { Context } from 'koa';
+import config from './config';
+import morgan from 'koa-morgan';
+import koaBasicAuth from 'koa-basic-auth';
+import { updateHostname } from './digitalOceanClient';
 
 const app = new Koa();
-app.use(morgan("combined"));
+app.use(morgan('combined'));
 app.use(koaBasicAuth({ name: config.apiUser, pass: config.apiPassword }));
 
 app.use(async (ctx) => {
-  if (ctx.path === "/nic/update") {
+  if (ctx.path === '/nic/update') {
     await updateHandler(ctx);
     return;
   }
@@ -24,7 +24,7 @@ const updateHandler = async (ctx: Context) => {
   >;
 
   if (!hostname || !currentIpAddress) {
-    ctx.throw(400, "Invalid No-IP update request");
+    ctx.throw(400, 'Invalid No-IP update request');
   }
 
   console.log(

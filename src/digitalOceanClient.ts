@@ -1,5 +1,5 @@
-import axios from "axios";
-import config from "./config";
+import axios from 'axios';
+import config from './config';
 
 const httpClient = axios.create({
   headers: {
@@ -36,7 +36,7 @@ const getDomainRecords = async (
 const findDomainRecordByHostname = async (
   hostname: string
 ): Promise<DomainRecordWithDomainName | undefined> => {
-  const domainName = hostname.split(".").slice(-2).join(".");
+  const domainName = hostname.split('.').slice(-2).join('.');
   const records = await getDomainRecords(domainName);
 
   const hostnameRecord = records.find((record) => {
@@ -48,7 +48,7 @@ const findDomainRecordByHostname = async (
     return undefined;
   }
 
-  if (["A", "AAAA"].includes(hostnameRecord.type)) {
+  if (['A', 'AAAA'].includes(hostnameRecord.type)) {
     return undefined;
   }
 
@@ -80,5 +80,5 @@ const updateDomainRecord = async (
     { data: newIpAddress }
   );
 
-  console.log("Domain record updated");
+  console.log('Domain record updated');
 };
