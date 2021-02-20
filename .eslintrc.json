@@ -1,6 +1,25 @@
 {
+    "env": {
+        "node": true,
+        "es2021": true
+    },
     "extends": [
+        "standard",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "sourceType": "module"
+    },
+    "plugins": [
         "prettier",
-        "prettier/@typescript-eslint"
-    ]
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "semi": "off",
+        "prettier/prettier": [
+            "error"
+        ]
+    }
 }

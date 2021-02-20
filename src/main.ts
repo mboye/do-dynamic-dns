@@ -1,7 +1,7 @@
 import Koa, { Context } from 'koa';
-import config from './config';
 import morgan from 'koa-morgan';
 import koaBasicAuth from 'koa-basic-auth';
+import config from './config';
 import { updateHostname } from './digitalOceanClient';
 
 const app = new Koa();

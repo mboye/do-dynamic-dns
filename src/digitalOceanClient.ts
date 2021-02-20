@@ -16,6 +16,7 @@ type DomainRecord = {
 };
 
 type DomainRecordsResponseBody = {
+  // eslint-disable-next-line camelcase
   domain_records: DomainRecord[];
 };
 
@@ -73,9 +74,7 @@ const updateDomainRecord = async (
   record: DomainRecordWithDomainName,
   newIpAddress: string
 ): Promise<void> => {
-  const {
-    data,
-  } = await httpClient.put(
+  await httpClient.put(
     `${config.digitalOcean.apiBaseUrl}/domains/${record.domainName}/records/${record.id}`,
     { data: newIpAddress }
   );
