@@ -22,6 +22,11 @@ const updateHandler = async (ctx: Context) => {
     string,
     string
   >;
+
+  if (!hostname || !currentIpAddress) {
+    ctx.throw(400, "Invalid No-IP update request");
+  }
+
   console.log(
     `Received update. Hostname: ${hostname}, IP address: ${currentIpAddress}`
   );
