@@ -63,9 +63,13 @@ const getAllDomainRecords = async (): Promise<ExtendedDomainRecord[]> => {
   return (
     await Promise.all(
       domains.map(async (domain) =>
-        (await getDomainRecords(domain.name)).map<ExtendedDomainRecord>(
-          (record) => ({ ...record, domain, fqdn: "" })
-        )
+        (await getDomainRecords(domain.name))
+          .filter((record) => ["A", "AAAA"].includes(record.type))
+          .map<ExtendedDomainRecord>((record) => ({
+            ...record,
+            domain,
+            fqdn: `${record.name}.${domain.name}`,
+          }))
       )
     )
   ).flat();
