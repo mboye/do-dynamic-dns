@@ -1,9 +1,10 @@
 import { config } from 'dotenv';
+import { logger } from './logger';
 
 config({ path: '.env' });
 
 const env = process.env.NODE_ENV || 'dev';
-console.log(`Loading config for environment: ${env}`);
+logger.info(`Loading config for environment: ${env}`);
 config({ path: `.env.${env}` });
 
 const requireEnv = (key: string): string => {
@@ -20,6 +21,7 @@ export default {
   apiPassword: requireEnv('API_PASSWORD'),
   digitalOcean: {
     apiBaseUrl: requireEnv('DO_API_BASE_URL'),
-    token: requireEnv('DO_TOKEN'),
+    token: requireEnv('DO_TOKEN')
   },
+  logLevel: process.env.LOG_LEVEL || 'info'
 };
