@@ -60,7 +60,11 @@ const findDomainRecordByHostname = async (
     return undefined;
   }
 
-  if (['A', 'AAAA'].includes(hostnameRecord.type)) {
+  if (!['A', 'AAAA'].includes(hostnameRecord.type)) {
+    logger.error(
+      'Found domain record with matching hostname, but the record type is not A/AAAA',
+      { domainRecord: hostnameRecord }
+    );
     return undefined;
   }
 
