@@ -28,6 +28,7 @@ type DomainRecordWithDomainName = DomainRecord & {
 const getDomainRecords = async (
   domainName: string
 ): Promise<DomainRecord[]> => {
+  logger.debug('Fetching domain records', { domainName });
   const { data } = await httpClient.get<DomainRecordsResponseBody>(
     `${config.digitalOcean.apiBaseUrl}/domains/${domainName}/records`
   );
