@@ -21,6 +21,11 @@ type DomainRecordsResponseBody = {
   domain_records: DomainRecord[];
 };
 
+type UpdateDomainRecordResponseBody = {
+  // eslint-disable-next-line camelcase
+  domain_record: DomainRecord;
+};
+
 type DomainRecordWithDomainName = DomainRecord & {
   domainName: string;
 };
@@ -38,7 +43,7 @@ const getDomainRecords = async (
   return data.domain_records;
 };
 
-const findDomainRecordByHostname = async (
+export const findDomainRecordByHostname = async (
   hostname: string
 ): Promise<DomainRecordWithDomainName | undefined> => {
   logger.debug('Finding domain name record by hostname', { hostname });
@@ -71,33 +76,15 @@ const findDomainRecordByHostname = async (
   return { ...hostnameRecord, domainName };
 };
 
-export const updateHostname = async (
-  hostname: string,
-  currentIpAddress: string
-): Promise<void> => {
-  const record = await findDomainRecordByHostname(hostname);
-  if (!record) {
-    throw new Error(
-      `Failed to find domain A/AAAA record with hostname "${hostname}"`
-    );
-  }
-
-  if (record.data === currentIpAddress) {
-    logger.info('Domain record is already up to date', { currentIpAddress });
-    return;
-  }
-
-  await updateDomainRecord(record, currentIpAddress);
-};
-
-const updateDomainRecord = async (
+export const updateDomainRecord = async (
   record: DomainRecordWithDomainName,
   newIpAddress: string
-): Promise<void> => {
-  await httpClient.put(
+): Promise<DomainRecord> => {
+  const { data } = await httpClient.put<UpdateDomainRecordResponseBody>(
     `${config.digitalOcean.apiBaseUrl}/domains/${record.domainName}/records/${record.id}`,
     { data: newIpAddress }
   );
 
   logger.info('Domain record updated');
+  return data.domain_record;
 };
