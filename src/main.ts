@@ -28,10 +28,7 @@ const updateHandler = async (ctx: Context) => {
     ctx.throw(400, 'Invalid No-IP update request');
   }
 
-  logger.info(
-    `Processing update. Hostname: ${hostname}, IP address: ${currentIpAddress}`
-  );
-
+  logger.info('Processing IP address update', { hostname, currentIpAddress });
   await updateHostname(hostname, currentIpAddress);
 
   ctx.status = 200;

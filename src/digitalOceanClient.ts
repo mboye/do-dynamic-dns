@@ -41,7 +41,7 @@ const getDomainRecords = async (
 const findDomainRecordByHostname = async (
   hostname: string
 ): Promise<DomainRecordWithDomainName | undefined> => {
-  logger.info('Finding domain name record by hostname', { hostname });
+  logger.debug('Finding domain name record by hostname', { hostname });
 
   const domainName = hostname.split('.').slice(-2).join('.');
   logger.debug(`Two-level domain name is ${domainName}`);
@@ -80,6 +80,11 @@ export const updateHostname = async (
     throw new Error(
       `Failed to find domain A/AAAA record with hostname "${hostname}"`
     );
+  }
+
+  if (record.data === currentIpAddress) {
+    logger.info('Domain record is already up to date', { currentIpAddress });
+    return;
   }
 
   await updateDomainRecord(record, currentIpAddress);
