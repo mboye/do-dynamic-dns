@@ -1,10 +1,9 @@
 import { config } from 'dotenv';
-import { logger } from './logger';
 
 config({ path: '.env' });
 
 const env = process.env.NODE_ENV || 'dev';
-logger.info(`Loading config for environment: ${env}`);
+console.info(`Loading config for environment: ${env}`);
 config({ path: `.env.${env}` });
 
 const requireEnv = (key: string): string => {
