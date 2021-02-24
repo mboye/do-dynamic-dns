@@ -4,8 +4,8 @@ import { logger } from './logger';
 
 const httpClient = axios.create({
   headers: {
-    Authorization: `Bearer ${config.digitalOcean.token}`,
-  },
+    Authorization: `Bearer ${config.digitalOcean.token}`
+  }
 });
 
 type DomainRecord = {
@@ -31,6 +31,8 @@ const getDomainRecords = async (
   const { data } = await httpClient.get<DomainRecordsResponseBody>(
     `${config.digitalOcean.apiBaseUrl}/domains/${domainName}/records`
   );
+
+  logger.debug('Fetched domain records', data);
 
   return data.domain_records;
 };
