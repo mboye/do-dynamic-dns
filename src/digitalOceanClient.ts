@@ -41,15 +41,22 @@ const getDomainRecords = async (
 const findDomainRecordByHostname = async (
   hostname: string
 ): Promise<DomainRecordWithDomainName | undefined> => {
+  logger.info('Finding domain name record by hostname', { hostname });
+
   const domainName = hostname.split('.').slice(-2).join('.');
+  logger.debug(`Two-level domain name is ${domainName}`);
+
   const records = await getDomainRecords(domainName);
+  logger.debug(`Found ${records.length} domain records`);
 
   const hostnameRecord = records.find((record) => {
     const fqdn = `${record.name}.${domainName}`;
+    logger.debug('Mapping domain record to hostname', { fqdn });
     return fqdn === hostname;
   });
 
   if (!hostnameRecord) {
+    logger.error('None of the domain records matched the hostname');
     return undefined;
   }
 
