@@ -3,6 +3,7 @@ import morgan from 'koa-morgan';
 import koaBasicAuth from 'koa-basic-auth';
 import config from './config';
 import { updateHostname } from './digitalOceanClient';
+import { logger } from './logger';
 
 const app = new Koa();
 app.use(morgan('combined'));
@@ -27,7 +28,7 @@ const updateHandler = async (ctx: Context) => {
     ctx.throw(400, 'Invalid No-IP update request');
   }
 
-  console.log(
+  logger.info(
     `Processing update. Hostname: ${hostname}, IP address: ${currentIpAddress}`
   );
 
@@ -36,5 +37,5 @@ const updateHandler = async (ctx: Context) => {
   ctx.status = 200;
 };
 
-console.log(`Listening on port ${config.listenPort}`);
+logger.info('Starting server', { port: config.listenPort });
 app.listen(config.listenPort);

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from './config';
+import { logger } from './logger';
 
 const httpClient = axios.create({
   headers: {
@@ -79,5 +80,5 @@ const updateDomainRecord = async (
     { data: newIpAddress }
   );
 
-  console.log('Domain record updated');
+  logger.info('Domain record updated');
 };
