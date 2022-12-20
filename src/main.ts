@@ -56,4 +56,19 @@ const updateHandler = async (ctx: Context) => {
 };
 
 logger.info('Starting server', { port: config.listenPort });
-app.listen(config.listenPort);
+const listener = app.listen(config.listenPort);
+
+const exitHandler = async () => {
+  logger.info('Shutting down server');
+  listener.close((error) => {
+    if (error) {
+      logger.error(error);
+      process.exit(1);
+    }
+
+    process.exit(0);
+  });
+};
+
+process.once('SIGTERM', exitHandler);
+process.once('SIGINT', exitHandler);
