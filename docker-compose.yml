@@ -1,0 +1,11 @@
+version: '2'
+services:
+  app:
+    build: .
+    ports:
+      - 8201:3000
+    environment:
+      PORT: 3000
+    env_file:
+      - secrets.env
+    restart: always
